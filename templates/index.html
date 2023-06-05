@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Codebase AI</title>
+  </head>
+  <body>
+    <h1>Codebase AI</h1>
+    <form method="POST">
+      <label for="query">Enter your question:</label>
+      <input type="text" id="query" name="query">
+      <button type="submit">Ask</button>
+    </form>
+    {% if query %}
+      <p>Your question: {{ query }}</p>
+    {% endif %}
+    {% if response %}
+      <p>Answer: {{ response }}</p>
+    {% endif %}
+  </body>
+</html>

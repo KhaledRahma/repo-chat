@@ -29,14 +29,7 @@ vector_store = SupabaseVectorStore(
     table_name=os.environ.get("TABLE_NAME"),
     query_name="repo_chat_search"
 )
-
-while True:
-    query = input("\033[34mWhat question do you have about your repo?\n\033[0m")
-
-    if query.lower().strip() == "exit":
-        print("\033[31mGoodbye!\n\033[0m")
-        break
-
+def run_chatbot(query):
     matched_docs = vector_store.similarity_search(query)
     code_str = ""
 
@@ -45,7 +38,6 @@ while True:
         
     print("\n\033[35m" + code_str + "\n\033[32m")
 
-    
     template="""
     You are Codebase AI. You are a superintelligent AI that answers questions about codebases.
 
@@ -67,7 +59,7 @@ while True:
     Code file(s):
     {code}
     
-    [END OF CODE FILE(S)]w
+    [END OF CODE FILE(S)]
 
     Now answer the question using the code file(s) above.
     """
@@ -77,6 +69,6 @@ while True:
     chat_prompt = ChatPromptTemplate.from_messages([system_message_prompt])
     chain = LLMChain(llm=chat, prompt=chat_prompt)
 
-    chain.run(code=code_str, query=query)
+    response = chain.run(code=code_str, query=query)
 
-    print("\n\n")
+    return response
